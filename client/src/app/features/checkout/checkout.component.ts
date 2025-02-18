@@ -63,7 +63,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       this.paymentElement.mount('#payment-element');
       this.paymentElement.on('change', this.handlePaymentChange);
     } catch (error: any) {
-      console.log("aqui esta");
+      console.log("aqui esta el maje");
       this.snackbar.error(error.message);
     }
   }

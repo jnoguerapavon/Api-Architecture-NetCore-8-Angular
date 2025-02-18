@@ -36,7 +36,7 @@ public class PaymentService : IPaymentService
 
         var total = subtotal + shippingPrice;
 
-       // await CreateUpdatePaymentIntentAsync(cart, total);
+        await CreateUpdatePaymentIntentAsync(cart, total);
 
         await cartService.SetCartAsync(cart);
 

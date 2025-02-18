@@ -21,7 +21,10 @@ export class StripeService {
   private paymentElement?: StripePaymentElement;
 
   constructor() {
+    console.log('paso   1.3');
     this.stripePromise = loadStripe(environment.stripePublicKey);
+    console.log('paso   1.4');
+    console.log(this.stripePromise);
   }
 
   getStripeInstance() {
@@ -32,9 +35,16 @@ export class StripeService {
     if (!this.elements) {
       const stripe = await this.getStripeInstance();
       if (stripe) {
+        console.log('antes create');
         const cart = await firstValueFrom(this.createOrUpdatePaymentIntent());
+        console.log('despues create');
+        console.log(cart.clientSecret);
+
         this.elements = stripe.elements(
           {clientSecret: cart.clientSecret, appearance: {labels: 'floating'}})
+         console.log('aqui aqui es');
+
+          console.log('despues create  1.1');
       } else {
         throw new Error('Stripe has not been loaded');
       }
@@ -55,9 +65,13 @@ export class StripeService {
   }
 
   async createAddressElement() {
+    console.log('paso   1');
     if (!this.addressElement) {
+      console.log('paso   1.1');
       const elements = await this.initializeElements();
+      console.log('paso   1.2');
       if (elements) {
+        console.log('paso   2');
         const user = this.accountService.currentUser();
         let defaultValues: StripeAddressElementOptions['defaultValues'] = {};
 
@@ -123,14 +137,19 @@ export class StripeService {
 
   createOrUpdatePaymentIntent() {
     const cart = this.cartService.cart();
+    console.log('json');
+    console.log(cart  || JSON);
     const hasClientSecret = !!cart?.clientSecret;
     if (!cart) throw new Error('Problem with cart');
     return this.http.post<Cart>(this.baseUrl + 'payments/' + cart.id, {}).pipe(
       map(async cart => {
+        console.log(hasClientSecret);
         if (!hasClientSecret) {
           await firstValueFrom(this.cartService.setCart(cart));
+          console.log(cart);
           return cart;
         }
+        console.log(cart);
         return cart;
       })
     )
