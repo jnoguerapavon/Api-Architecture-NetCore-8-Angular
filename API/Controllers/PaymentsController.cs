@@ -110,4 +110,11 @@ public class PaymentsController(IPaymentService paymentService,
             throw new StripeException("Invalid signature");
         }
     }
+
+
+    [HttpGet("warranty")]
+    public async Task<ActionResult<IReadOnlyList<Warranty>>> GetWarranties()
+    {
+        return Ok(await unit.Repository<Warranty>().ListAllAsync());
+    }
 }

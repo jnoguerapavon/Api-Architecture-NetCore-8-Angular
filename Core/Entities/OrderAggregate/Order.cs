@@ -15,6 +15,8 @@ public class Order : BaseEntity, IDtoConvertible
     public OrderStatus Status { get; set; } = OrderStatus.Pending;
     public required string PaymentIntentId { get; set; }
 
+    public Warranty? Warranty { get; set; }
+
     public decimal GetTotal()
     {
         return Subtotal - Discount + DeliveryMethod.Price;

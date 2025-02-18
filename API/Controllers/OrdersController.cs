@@ -49,7 +49,11 @@ public class OrdersController(ICartService cartService, IUnitOfWork unit) : Base
 
         var deliveryMethod = await unit.Repository<DeliveryMethod>().GetByIdAsync(orderDto.DeliveryMethodId);
 
+        var Warranty = await unit.Repository<Warranty>().GetByIdAsync(orderDto.WarrantyId);
+
         if (deliveryMethod == null) return BadRequest("No delivery method selected");
+
+        if (Warranty == null) return BadRequest("No warranty selected");
 
         var order = new Order
         {
@@ -60,7 +64,8 @@ public class OrdersController(ICartService cartService, IUnitOfWork unit) : Base
             Discount = orderDto.Discount,
             PaymentSummary = orderDto.PaymentSummary,
             PaymentIntentId = cart.PaymentIntentId,
-            BuyerEmail = email
+            BuyerEmail = email,
+            Warranty= Warranty
         };
 
         unit.Repository<Order>().Add(order);

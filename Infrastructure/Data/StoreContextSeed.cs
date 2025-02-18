@@ -50,5 +50,21 @@ public class StoreContextSeed
 
             await context.SaveChangesAsync();
         }
+
+
+
+        if (!context.Warranties.Any())
+        {
+            var dmData = await File
+                .ReadAllTextAsync(path + @"/Data/SeedData/warranty.json");
+
+            var warranties = JsonSerializer.Deserialize<List<Warranty>>(dmData);
+
+            if (warranties == null) return;
+
+            context.Warranties.AddRange(warranties);
+
+            await context.SaveChangesAsync();
+        }
     }
 }

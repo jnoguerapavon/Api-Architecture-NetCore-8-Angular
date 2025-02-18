@@ -25,6 +25,9 @@ public class PaymentService : IPaymentService
 
         var shippingPrice = await GetShippingPriceAsync(cart) ?? 0;
 
+
+        var warrantyPrice = await GetWarrantyPriceAsync(cart) ?? 0;
+
         await ValidateCartItemsInCartAsync(cart);
 
         var subtotal = CalculateSubtotal(cart);
@@ -34,7 +37,7 @@ public class PaymentService : IPaymentService
             subtotal = await ApplyDiscountAsync(cart.Coupon, subtotal);
         }
 
-        var total = subtotal + shippingPrice;
+        var total = subtotal + shippingPrice + warrantyPrice;
 
         await CreateUpdatePaymentIntentAsync(cart, total);
 
@@ -131,6 +134,21 @@ public class PaymentService : IPaymentService
                     ?? throw new Exception("Problem with delivery method");
 
             return (long)deliveryMethod.Price * 100;
+        }
+
+        return null;
+    }
+
+
+    private async Task<long?> GetWarrantyPriceAsync(ShoppingCart cart)
+    {
+        if (cart.WarrantyId.HasValue)
+        {
+            var warranty = await unit.Repository<Warranty>()
+                .GetByIdAsync((int)cart.WarrantyId)
+                    ?? throw new Exception("Problem with delivery method");
+
+            return (long)warranty.Price * 100;
         }
 
         return null;

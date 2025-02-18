@@ -14,6 +14,8 @@ public class StoreContext(DbContextOptions options) : IdentityDbContext<AppUser>
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
 
+    public DbSet<Warranty> Warranties { get; set; } 
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

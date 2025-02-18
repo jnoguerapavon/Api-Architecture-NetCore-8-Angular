@@ -1,0 +1,26 @@
+[
+  {
+    "ShortName": "Protección de 2 años",
+    "AdditionalInformation": "Sin costo adicional: no paga nada por reparaciones – piezas, mano de obra y envío incluidos.",
+    "Description": "ASURION Plan de protección para portátiles de 2 años",
+    "Price": 47.99,
+    "PictureUrl": "/images/products/sb-ang2.png",
+    "Estado": true
+  },
+  {
+    "ShortName": "Protección de 4 años",
+    "AdditionalInformation": "Elegibilidad del producto: El plan debe comprarse con un producto o dentro de los 30 días posteriores a la compra del producto. Las condiciones preexistentes no están cubiertas.",
+    "Description": "ASURION Plan de protección para portátiles de 4 años",
+    "Price": 79.99,
+    "PictureUrl": "/images/products/sb-core1.png",
+    "Estado": true
+  },
+  {
+    "ShortName": "Asurion Protección completa",
+    "AdditionalInformation": "Se renueva mensualmente hasta que se cancele",
+    "Description": "Un plan cubre todas las compras pasadas y futuras elegibles",
+    "Price": 16.99,
+    "PictureUrl": "/images/products/sb-core2.png",
+    "Estado": true
+  }
+]
