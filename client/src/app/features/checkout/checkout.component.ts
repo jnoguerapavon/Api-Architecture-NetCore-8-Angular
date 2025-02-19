@@ -18,6 +18,7 @@ import { CurrencyPipe, JsonPipe } from '@angular/common';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { OrderToCreate, ShippingAddress } from '../../shared/models/order';
 import { OrderService } from '../../core/services/order.service';
+import { CheckoutWarrantyComponent } from './checkout-warranty/checkout-warranty.component';
 
 @Component({
   selector: 'app-checkout',
@@ -31,8 +32,8 @@ import { OrderService } from '../../core/services/order.service';
     CheckoutDeliveryComponent,
     CheckoutReviewComponent,
     CurrencyPipe,
-    JsonPipe,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    CheckoutWarrantyComponent
 ],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss'
@@ -47,8 +48,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   addressElement?: StripeAddressElement;
   paymentElement?: StripePaymentElement;
   saveAddress = false;
-  completionStatus = signal<{address: boolean, card: boolean, delivery: boolean}>(
-    {address: false, card: false, delivery: false}
+  completionStatus = signal<{address: boolean, card: boolean, delivery: boolean, warranty: boolean}>(
+    {address: false, card: false, delivery: false, warranty : false}
   );
   confirmationToken?: ConfirmationToken;
   loading = false;
@@ -89,6 +90,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     })
   }
 
+
+  handlewarrantyChange(event: boolean) {
+    this.completionStatus.update(state => {
+      state.warranty= event;
+      return state;
+    })
+  }
+
   async getConfirmationToken() {
     try {
       if (Object.values(this.completionStatus()).every(status => status === true)) {
@@ -113,7 +122,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     if (event.selectedIndex === 2) {
       await firstValueFrom(this.stripeService.createOrUpdatePaymentIntent());
     }
+
     if (event.selectedIndex === 3) {
+      await firstValueFrom(this.stripeService.createOrUpdatePaymentIntent());
+    }
+
+    if (event.selectedIndex === 4) {
       await this.getConfirmationToken();
     }
   }
@@ -131,6 +145,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
             this.orderService.orderComplete = true;
             this.cartService.deleteCart();
             this.cartService.selectedDelivery.set(null);
+            this.cartService.selectedwarranty.set(null);
             this.router.navigateByUrl('/checkout/success');
           } else {
             throw new Error('Order creation failed');
@@ -168,7 +183,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       },
       deliveryMethodId: cart.deliveryMethodId,
       shippingAddress,
-      discount: this.cartService.totals()?.discount
+      discount: this.cartService.totals()?.discount,
+      warrantyId : cart.warrantyId
     }
   }
 

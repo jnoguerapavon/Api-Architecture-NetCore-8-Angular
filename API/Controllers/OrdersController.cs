@@ -65,7 +65,7 @@ public class OrdersController(ICartService cartService, IUnitOfWork unit) : Base
             PaymentSummary = orderDto.PaymentSummary,
             PaymentIntentId = cart.PaymentIntentId,
             BuyerEmail = email,
-            Warranty= Warranty
+            Warranty= Warranty,
         };
 
         unit.Repository<Order>().Add(order);
@@ -98,7 +98,9 @@ public class OrdersController(ICartService cartService, IUnitOfWork unit) : Base
         var order = await unit.Repository<Order>().GetEntityWithSpec(spec);
 
         if (order == null) return NotFound();
+       
+        var orderToReturn = order.ToDto();
 
-        return order.ToDto();
+        return orderToReturn;
     }
 }

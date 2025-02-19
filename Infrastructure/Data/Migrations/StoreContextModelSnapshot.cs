@@ -4,19 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20240728034223_RolesAdded")]
-    partial class RolesAdded
+    partial class StoreContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -197,9 +194,14 @@ namespace Infrastructure.Migrations
                     b.Property<decimal>("Subtotal")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("WarrantyId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DeliveryMethodId");
+
+                    b.HasIndex("WarrantyId");
 
                     b.ToTable("Orders");
                 });
@@ -267,6 +269,41 @@ namespace Infrastructure.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("Core.Entities.Warranty", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AdditionalInformation")
+                        .IsRequired()
+                        .HasColumnType("varchar(800)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PictureUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ShortName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Warranties");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -296,13 +333,13 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f0f410eb-1c21-44be-aeb9-ed4954e4fe12",
+                            Id = "a07b88e0-3611-4384-b53b-6679c7ccfd52",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "d9babf83-382a-4e6f-b8da-e4ab34c7ca60",
+                            Id = "0bf05c05-f872-47b5-b040-d02e8c6bd90a",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -431,6 +468,12 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Core.Entities.Warranty", "Warranty")
+                        .WithMany()
+                        .HasForeignKey("WarrantyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("Core.Entities.OrderAggregate.PaymentSummary", "PaymentSummary", b1 =>
                         {
                             b1.Property<int>("OrderId")
@@ -504,6 +547,8 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("ShippingAddress")
                         .IsRequired();
+
+                    b.Navigation("Warranty");
                 });
 
             modelBuilder.Entity("Core.Entities.OrderAggregate.OrderItem", b =>

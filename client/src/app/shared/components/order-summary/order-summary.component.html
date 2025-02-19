@@ -21,6 +21,12 @@
                         {{cartService.totals()?.shipping | currency}}
                     </dd>
                 </dl>
+                <dl class="flex items-center justify-between gap-4">
+                  <dt class="font-medium text-gray-500">Warranty</dt>
+                  <dd class="font-medium text-gray-900">
+                      {{cartService.totals()?.MontoWarranty | currency}}
+                  </dd>
+              </dl>
             </div>
 
             <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2">
@@ -35,9 +41,9 @@
             <div class="flex flex-col gap-2">
                 <button routerLink="/checkout" mat-flat-button>Checkout</button>
                 <button routerLink="/shop" mat-button>Continue Shopping</button>
-            </div>   
+            </div>
         }
-     
+
 
     </div>
 
@@ -49,7 +55,7 @@
             <div *ngIf="cartService.cart()?.coupon as coupon" class="flex justify-between items-center">
                 <span class="text-sm font-semibold">{{coupon.name}} applied</span>
                 <button
-                    (click)="removeCouponCode()" 
+                    (click)="removeCouponCode()"
                     mat-icon-button
                 >
                     <mat-icon color="warn">delete</mat-icon>
@@ -57,18 +63,18 @@
             </div>
             <mat-form-field appearance="outline">
                 <mat-label>Voucher code</mat-label>
-                <input 
+                <input
                     [disabled]="!!cartService.cart()?.coupon"
-                    [(ngModel)]="code" 
-                    name="code" 
-                    type="text" 
+                    [(ngModel)]="code"
+                    name="code"
+                    type="text"
                     matInput
                 >
             </mat-form-field>
 
-            <button 
+            <button
                 [disabled]="!!cartService.cart()?.coupon"
-                type="submit" 
+                type="submit"
                 mat-flat-button>Apply code</button>
         </form>
     </div>

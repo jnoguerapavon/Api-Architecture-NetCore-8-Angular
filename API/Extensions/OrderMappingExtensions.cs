@@ -21,7 +21,8 @@ public static class OrderMappingExtensions
             Discount = order.Discount,
             Total = order.GetTotal(),  
             Status = order.Status.ToString(),
-            PaymentIntentId = order.PaymentIntentId
+            PaymentIntentId = order.PaymentIntentId,
+            WarrantyPrice = order.Warranty!=null ?  order.Warranty.Price : 0 
         };
     }
 

@@ -8,6 +8,7 @@ public class OrderSpecification : BaseSpecification<Order>
     {
         AddInclude(x => x.OrderItems);
         AddInclude(x => x.DeliveryMethod);
+        AddInclude(x => x.Warranty);
         AddOrderByDescending(x => x.OrderDate);
     }
 
@@ -15,6 +16,7 @@ public class OrderSpecification : BaseSpecification<Order>
     {
         AddInclude("OrderItems");
         AddInclude("DeliveryMethod");
+        AddInclude("Warranty");
     }
 
     public OrderSpecification(string paymentIntentId, bool isPaymentIntent): 
@@ -22,6 +24,7 @@ public class OrderSpecification : BaseSpecification<Order>
     {
         AddInclude("OrderItems");
         AddInclude("DeliveryMethod");
+        AddInclude("Warranty");
     }
 
     public OrderSpecification(OrderSpecParams specParams) : base(x => 
@@ -30,6 +33,7 @@ public class OrderSpecification : BaseSpecification<Order>
     {
         AddInclude("OrderItems");
         AddInclude("DeliveryMethod");
+        AddInclude("Warranty");
         ApplyPaging(specParams.PageSize * (specParams.PageIndex -1), specParams.PageSize);
         AddOrderByDescending(x => x.OrderDate);
     }
@@ -38,6 +42,7 @@ public class OrderSpecification : BaseSpecification<Order>
     {
         AddInclude("OrderItems");
         AddInclude("DeliveryMethod");
+        AddInclude("Warranty");
     }
 
     private static OrderStatus? ParseStatus(string status)

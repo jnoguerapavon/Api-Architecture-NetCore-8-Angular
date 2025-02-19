@@ -26,6 +26,7 @@ export class Cart implements CartType {
     paymentIntentId?: string;
     clientSecret?: string;
     coupon?: Coupon;
+    warrantyId? : number
 }
 
 export type Coupon = {

@@ -59,7 +59,7 @@ public class PaymentService : IPaymentService
         return result.Status;
     }
 
-    private async Task CreateUpdatePaymentIntentAsync(ShoppingCart cart, long total)
+    private async Task CreateUpdatePaymentIntentAsync(ShoppingCart cart, decimal total)
     {
         var service = new PaymentIntentService();
 
@@ -67,7 +67,7 @@ public class PaymentService : IPaymentService
         {
             var options = new PaymentIntentCreateOptions
             {
-                Amount = total,
+                Amount = Convert.ToInt64(total),
                 Currency = "usd",
                 PaymentMethodTypes = ["card"]
             };
@@ -79,13 +79,13 @@ public class PaymentService : IPaymentService
         {
             var options = new PaymentIntentUpdateOptions
             {
-                Amount = total
+                Amount = Convert.ToInt64(total)
             };
             await service.UpdateAsync(cart.PaymentIntentId, options);
         }
     }
 
-    private async Task<long> ApplyDiscountAsync(AppCoupon appCoupon, long amount)
+    private async Task<decimal> ApplyDiscountAsync(AppCoupon appCoupon, decimal amount)
     {
         var couponService = new Stripe.CouponService();
 
@@ -93,22 +93,22 @@ public class PaymentService : IPaymentService
 
         if (coupon.AmountOff.HasValue)
         {
-            amount -= (long)coupon.AmountOff * 100;
+            amount -= (decimal)coupon.AmountOff * 100;
         }
 
         if (coupon.PercentOff.HasValue)
         {
             var discount = amount * (coupon.PercentOff.Value / 100);
-            amount -= (long)discount;
+            amount -= (decimal)discount;
         }
 
         return amount;
     }
 
-    private long CalculateSubtotal(ShoppingCart cart)
+    private decimal CalculateSubtotal(ShoppingCart cart)
     {
         var itemTotal = cart.Items.Sum(x => x.Quantity * x.Price * 100);
-        return (long)itemTotal;
+        return (decimal)itemTotal;
     }
 
     private async Task ValidateCartItemsInCartAsync(ShoppingCart cart)
@@ -140,7 +140,7 @@ public class PaymentService : IPaymentService
     }
 
 
-    private async Task<long?> GetWarrantyPriceAsync(ShoppingCart cart)
+    private async Task<decimal?> GetWarrantyPriceAsync(ShoppingCart cart)
     {
         if (cart.WarrantyId.HasValue)
         {
@@ -148,7 +148,7 @@ public class PaymentService : IPaymentService
                 .GetByIdAsync((int)cart.WarrantyId)
                     ?? throw new Exception("Problem with delivery method");
 
-            return (long)warranty.Price * 100;
+            return (decimal)warranty.Price * 100;
         }
 
         return null;

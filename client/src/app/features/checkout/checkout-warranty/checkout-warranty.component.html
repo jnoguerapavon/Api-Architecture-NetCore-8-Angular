@@ -1,0 +1,21 @@
+
+<div class="w-full">
+  <mat-radio-group
+      [value]="cartService.selectedwarranty()?.id"
+      (change)="updateWarranty($event.value)"
+      class="grid grid-cols-2 gap-4">
+      @for (_warranty of checkoutService.warranties; track _warranty.id) {
+      <label class="p-3 border border-gray-200 cursor-pointer w-full h-full hover:bg-purple-100">
+          <mat-radio-button
+              class="w-full h-full"
+              [checked]="cartService.selectedwarranty() === _warranty"
+              [value]="_warranty">
+              <div class="flex flex-col w-full h-full">
+                  <strong>{{_warranty.shortName}} - {{_warranty.price | currency}}</strong>
+                  <span class="text-sm">{{_warranty.Description}}</span>
+              </div>
+          </mat-radio-button>
+      </label>
+      }
+  </mat-radio-group>
+</div>

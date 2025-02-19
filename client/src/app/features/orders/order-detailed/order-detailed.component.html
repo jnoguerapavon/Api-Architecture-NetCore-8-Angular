@@ -42,7 +42,7 @@
                                 <tr>
                                     <td class="py-4">
                                         <div class="flex items-center gap-4">
-                                            <img src="{{item.pictureUrl}}" alt="product image" 
+                                            <img src="{{item.pictureUrl}}" alt="product image"
                                                 class="w-10 h-10">
                                             <span>{{item.productName}}</span>
                                         </div>
@@ -78,8 +78,14 @@
                                 {{order.shippingPrice| currency}}
                             </dd>
                         </dl>
+                        <dl class="flex items-center justify-between gap-4">
+                          <dt class="font-medium text-gray-500">Warranty</dt>
+                          <dd class="font-medium text-gray-900">
+                              {{order.warrantyPrice| currency}}
+                          </dd>
+                      </dl>
                     </div>
-        
+
                     <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2">
                         <dt class="font-medium text-gray-500">Total</dt>
                         <dd class="font-medium text-gray-900">
@@ -87,7 +93,7 @@
                         </dd>
                     </dl>
                 </div>
-                 
+
             </div>
 
         </div>

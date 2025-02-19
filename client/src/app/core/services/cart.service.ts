@@ -5,6 +5,7 @@ import { Cart, CartItem, Coupon } from '../../shared/models/cart';
 import { Product } from '../../shared/models/product';
 import { firstValueFrom, map, tap } from 'rxjs';
 import { DeliveryMethod } from '../../shared/models/deliveryMethod';
+import { Warranty } from '../../shared/models/warranty';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +18,15 @@ export class CartService {
     return this.cart()?.items.reduce((sum, item) => sum + item.quantity, 0)
   });
   selectedDelivery = signal<DeliveryMethod | null>(null);
+  selectedwarranty = signal<Warranty | null>(null);
   totals = computed(() => {
     const cart = this.cart();
     const delivery = this.selectedDelivery();
+    const _warranty = this.selectedwarranty();
 
     if (!cart) return null;
     const subtotal = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    
+
     let discountValue = 0;
 
     if (cart.coupon) {
@@ -33,14 +36,17 @@ export class CartService {
         discountValue = subtotal * (cart.coupon.percentOff / 100);
       }
     }
-    
+
     const shipping = delivery ? delivery.price : 0;
+
+    const MontoWarranty  = _warranty ? _warranty.price : 0;
 
     return {
       subtotal,
       shipping,
       discount: discountValue,
-      total: subtotal + shipping - discountValue
+      MontoWarranty,
+      total: subtotal + shipping + MontoWarranty - discountValue
     }
   })
 

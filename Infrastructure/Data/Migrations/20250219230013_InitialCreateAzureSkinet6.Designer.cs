@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20250218232438_InitialCreateAzureSkinet3")]
-    partial class InitialCreateAzureSkinet3
+    [Migration("20250219230013_InitialCreateAzureSkinet6")]
+    partial class InitialCreateAzureSkinet6
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -197,7 +197,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<decimal>("Subtotal")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("WarrantyId")
+                    b.Property<int>("WarrantyId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -336,13 +336,13 @@ namespace Infrastructure.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "bdbf92c8-c0ab-40e2-854e-5df38df6fa5c",
+                            Id = "a07b88e0-3611-4384-b53b-6679c7ccfd52",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "8ad4caec-e7fe-4f14-9932-cb09fa23e5e8",
+                            Id = "0bf05c05-f872-47b5-b040-d02e8c6bd90a",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -473,7 +473,9 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasOne("Core.Entities.Warranty", "Warranty")
                         .WithMany()
-                        .HasForeignKey("WarrantyId");
+                        .HasForeignKey("WarrantyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.OwnsOne("Core.Entities.OrderAggregate.PaymentSummary", "PaymentSummary", b1 =>
                         {

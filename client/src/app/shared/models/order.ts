@@ -11,9 +11,10 @@ export interface Order {
     discount?: number
     status: string
     total: number
-    paymentIntentId: string
+    paymentIntentId: string,
+    warrantyPrice: number
   }
-  
+
   export interface ShippingAddress {
     name: string
     line1: string
@@ -23,14 +24,14 @@ export interface Order {
     postalCode: string
     country: string
   }
-  
+
   export interface PaymentSummary {
     last4: number
     brand: string
     expMonth: number
     expYear: number
   }
-  
+
   export interface OrderItem {
     productId: number
     productName: string
@@ -38,11 +39,12 @@ export interface Order {
     price: number
     quantity: number
   }
-  
+
   export interface OrderToCreate {
     cartId: string;
     deliveryMethodId: number;
     shippingAddress: ShippingAddress;
     paymentSummary: PaymentSummary;
     discount?: number;
+    warrantyId? : number
   }

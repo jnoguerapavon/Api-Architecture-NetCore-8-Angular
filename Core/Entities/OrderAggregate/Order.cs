@@ -15,10 +15,13 @@ public class Order : BaseEntity, IDtoConvertible
     public OrderStatus Status { get; set; } = OrderStatus.Pending;
     public required string PaymentIntentId { get; set; }
 
-    public Warranty? Warranty { get; set; }
+    public Warranty Warranty { get; set; } = null!;
 
     public decimal GetTotal()
     {
-        return Subtotal - Discount + DeliveryMethod.Price;
+        decimal MontoWarranty = 0;
+        MontoWarranty =Warranty!=null ?  Warranty.Price : 0;
+       
+        return Subtotal - Discount + DeliveryMethod.Price + MontoWarranty;
     }
 }
